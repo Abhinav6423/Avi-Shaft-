@@ -1,0 +1,47 @@
+export const DashboardProjects = [
+    {
+        tag: "work",
+        tagColor: "bg-purple-100 text-purple-700",
+        category: "Work",
+        title: "Gym Session Week 3",
+        description: "Day for biceps, legs, and back.",
+        location: "Dena Gym",
+        time: "15:00",
+    },
+    {
+        tag: "Learning",
+        tagColor: "bg-blue-100 text-blue-700",
+        category: "Learning",
+        title: "Advanced Piano Class",
+        description: "Practicing melody with Mrs. Angeline.",
+        location: "Mrs. Angeline house",
+        time: "19:00",
+    },
+    {
+        tag: "inspiration",
+        tagColor: "bg-pink-100 text-pink-700",
+        category: "Learning",
+        title: "Product Design Webinar",
+        description: "Tokopedia Product Design Webinar.",
+        location: "Online",
+        time: "20:00",
+    },
+    {
+        tag: "inspiration",
+        tagColor: "bg-pink-100 text-pink-700",
+        category: "Learning",
+        title: "Product Design Webinar",
+        description: "Tokopedia Product Design Webinar.",
+        location: "Online",
+        time: "20:00",
+    },
+    {
+        tag: "inspiration",
+        tagColor: "bg-pink-100 text-pink-700",
+        category: "Learning",
+        title: "Product Design Webinar",
+        description: "Tokopedia Product Design Webinar.",
+        location: "Online",
+        time: "20:00",
+    }
+];
