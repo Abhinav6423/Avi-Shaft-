@@ -1,41 +1,69 @@
 import React from "react";
-import { ArrowUpRight } from "lucide-react"; // optional icon, remove if not using lucide
+import { ArrowUpRight } from "lucide-react";
 
-export default function DashboardCard({ icon: Icon, value, change, label }) {
-  // dummy data
-  const data = {
-    icon: "💼",
-    value: 310,
-    change: "+8.72%",
-    label: "Total Employees",
-  };
-
+export default function DashboardCard({ Icon, value, label }) {
   return (
-    <div className="w-full bg-[#FFFF] rounded-2xl shadow-[0_1px_4px_rgba(0,0,0,0.06)]
- border hover:bg-[#F9FAFB] border-[#E5E7EB] p-4 flex flex-col gap-3">
+    <div
+      className="
+        w-full 
+        rounded-3xl 
+        p-6 
+        bg-white/60
+        backdrop-blur-xl
+        border border-white/40
+        shadow-[0_8px_25px_rgba(0,0,0,0.05)]
+        hover:shadow-[0_12px_32px_rgba(0,0,0,0.12)]
+        transition-all 
+        duration-300 
+        hover:-translate-y-1
+        relative
+        overflow-hidden
+      "
+    >
+      {/* Glow Accent */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/20 to-transparent pointer-events-none" />
 
-      {/* Top Icons */}
-      <div className="flex justify-between items-center">
-        <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-xl">
-          <Icon size={18} bgColor="#475569" />
+      {/* Top Row */}
+      <div className="flex justify-between items-center relative z-10">
+        <div
+          className="
+            h-12 w-12 
+            rounded-2xl 
+            bg-gradient-to-br from-emerald-200/60 to-emerald-100/40
+            flex items-center justify-center
+            shadow-inner
+          "
+        >
+          <Icon size={22} className="text-emerald-700 drop-shadow-sm" />
         </div>
 
-        <button className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100">
-          <ArrowUpRight size={18} className="text-gray-600" />
+        <button
+          className="
+            h-9 w-9 
+            rounded-xl 
+            bg-white/40 
+            backdrop-blur-md
+            flex items-center justify-center
+            transition-all 
+            hover:bg-white/70
+            hover:shadow
+          "
+        >
+          <ArrowUpRight size={18} className="text-emerald-700" />
         </button>
       </div>
 
-      {/* Number + Percentage */}
-      <div className="flex items-center gap-3">
-        <p className="text-3xl font-semibold text-gray-900">{value}</p>
-
-        <span className="text-sm px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full font-medium">
-          {change}
-        </span>
+      {/* Value */}
+      <div className="mt-4 relative z-10">
+        <p className="text-4xl font-bold text-gray-900 tracking-tight">
+          {value}
+        </p>
       </div>
 
       {/* Label */}
-      <p className="text-sm font-medium text-gray-500">{label}</p>
+      <p className="text-sm font-semibold text-emerald-800 mt-1 opacity-80 relative z-10 tracking-wide">
+        {label.replace("total", "")}
+      </p>
     </div>
   );
 }

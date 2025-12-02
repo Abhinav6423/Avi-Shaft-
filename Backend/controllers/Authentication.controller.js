@@ -17,6 +17,10 @@ export const registerUser = async (req, res) => {
         const user = new User({ username, email, password, profilePic });
         await user.save();
 
+        const createUserStatsAccount = await UserStats.create({ userId: user._id });
+
+        if (!createUserStatsAccount) return res.status(400).json({ success: false, message: "Error creating user stats account" });
+
         const accessToken = user.generateToken();
 
         res.cookie("access_token", accessToken, {
@@ -115,6 +119,9 @@ export const me = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 profilePic: user.profilePic,
+                level: user.level,
+                totalXpGained: user.totalXpGained,
+                xpToNextLevel: user.xpToNextLevel
             },
         });
     } catch (error) {
@@ -129,8 +136,16 @@ export const getUserStats = async (req, res) => {
         if (!userId) return res.status(400).json({ success: false, message: "User id not provided" });
         const userStats = await UserStats.findOne({ userId }).lean();
         if (!userStats) return res.status(400).json({ success: false, message: "User stats not found" });
-        return res.status(200).json({ success: true, message: "User stats fetched successfully", userStats });
+        return res.status(200).json({
+            success: true, message: "User stats fetched successfully", data: {
+                totalProjects: userStats.totalProjects,
+                totalQuickNotes: userStats.totalQuickNotes,
+                totalLearnings: userStats.totalLearnings,
+                totalHabits: userStats.totalHabits
+            }
+        });
     } catch (error) {
-
+        console.error("❌ Error fetching user stats:", error.message);
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 }

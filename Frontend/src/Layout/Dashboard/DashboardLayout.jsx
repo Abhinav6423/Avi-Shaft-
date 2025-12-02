@@ -5,8 +5,46 @@ import GreenStrip from "../../Components/Dashboard/GreetingStrip";
 import { DashboardCardWidgets } from "../../utils/DashboardCardWidgets";
 import DashboardQuickNoteLayout from "./DashboardQuickNoteLayout";
 import DashboardProjectLayout from "./DashboardProjectLayout";
-
+import { getUserStats } from "../../Api-Calls/getUserStats.js";
+import { useState } from "react";
+import { useEffect } from "react";
+import { ICON_MAP } from "../../utils/IconMap.jsx";
+import UserXPCard from "../../Components/Dashboard/UserXpCard.jsx";
+import { useAuth } from "../../Context/authContext.js";
 const DashboardLayout = () => {
+
+    const [statscard, setStatscard] = useState([]);
+
+    const { userData } = useAuth();
+
+    const getStats = async () => {
+        try {
+            const result = await getUserStats();
+
+            if (result.status) {
+                const stats = result.data;
+
+                const formatted = Object.keys(stats).map((key) => ({
+                    key: key.charAt(0).toUpperCase() + key.slice(1),
+
+                    value: stats[key],
+                    Icon: ICON_MAP[key]
+                }));
+
+                setStatscard(formatted);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+
+    useEffect(() => {
+        getStats();
+    }, [])
+
+
     return (
         <div className="min-h-screen bg-[#F3F7F4]"
             style={{
@@ -30,6 +68,9 @@ const DashboardLayout = () => {
                 </div>
             </div>
 
+
+
+
             {/* DASHBOARD CARDS GRID */}
             <div className="-mt-12 pb-6">
                 <div className="container mx-auto px-5">
@@ -44,10 +85,24 @@ const DashboardLayout = () => {
                         gap-8
                     "
                     >
-                        {DashboardCardWidgets.map((card, idx) => (
-                            <DashboardCard key={card.label} {...card} />
+                        {statscard.map((card, idx) => (
+                            <DashboardCard key={idx}
+                                value={card.value}
+                                Icon={card.Icon}
+                                label={card.key} />
                         ))}
                     </div>
+                </div>
+            </div>
+
+            {/* XP / LEVEL SECTION */}
+            <div className=" pb-6">
+                <div className="container mx-auto px-5">
+                    <UserXPCard
+                        level={userData?.level}
+                        xp={userData?.totalXpGained}
+                        xpNeeded={userData?.xpToNextLevel}
+                    />
                 </div>
             </div>
 

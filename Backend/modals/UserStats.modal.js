@@ -9,17 +9,25 @@ const userStatsSchema = new Schema(
         },
         totalProjects: {
             type: Number,
-            default: 0
+            default: 0,
+
         },
         totalQuickNotes: {
             type: Number,
-            default: 0
+            default: 0,
+
         },
         totalLearnings: {
             type: Number,
-            default: 0
+            default: 0,
+
+        },
+        totalHabits: {
+            type: Number,
+            default: 0,
+
         }
-    } , {timestamps: true}
+    }, { timestamps: true }
 )
 
 const UserStats = mongoose.model("UserStats", userStatsSchema)
