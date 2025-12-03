@@ -11,9 +11,11 @@ import { useEffect } from "react";
 import { ICON_MAP } from "../../utils/IconMap.jsx";
 import UserXPCard from "../../Components/Dashboard/UserXpCard.jsx";
 import { useAuth } from "../../Context/authContext.js";
+import Loader from "../../Components/Loader.jsx";
 const DashboardLayout = () => {
 
     const [statscard, setStatscard] = useState([]);
+    const [loader, setLoader] = useState(true)
 
     const { userData } = useAuth();
 
@@ -35,6 +37,8 @@ const DashboardLayout = () => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoader(false)
         }
     };
 
@@ -44,6 +48,9 @@ const DashboardLayout = () => {
         getStats();
     }, [])
 
+    if (loader) {
+        return <Loader />
+    }
 
     return (
         <div className="min-h-screen bg-[#F3F7F4]"

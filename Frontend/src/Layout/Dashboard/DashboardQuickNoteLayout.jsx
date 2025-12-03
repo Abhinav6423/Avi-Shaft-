@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import DashboardQuickNoteCard from "../../Components/Dashboard/DashboardQuickNoteCard";
 import { getAllQuickNote } from "../../Api-Calls/getAllQuickNote.js"
 import { Link } from "react-router-dom";
+import Loader from "../../Components/Loader.jsx"
 
 export default function DashboardQuickNoteLayout() {
 
@@ -56,7 +57,7 @@ export default function DashboardQuickNoteLayout() {
         setActiveIndex(index);
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loader />;
 
     return (
         <div className="container mx-auto px-4 py-6">

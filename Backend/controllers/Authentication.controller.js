@@ -1,6 +1,18 @@
 import User from "../modals/User.modal.js";
 import UserStats from "../modals/UserStats.modal.js";
 
+// Detect environment
+const isProduction = process.env.NODE_ENV === "production";
+
+// Helper cookie config
+const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction,                 // HTTPS only on production
+    sameSite: isProduction ? "none" : "lax",  // none for prod, lax for localhost
+    maxAge: 24 * 60 * 60 * 1000,
+    path: "/"
+};
+
 export const registerUser = async (req, res) => {
     try {
         const { username, email, password, profilePic } = req.body;
@@ -17,19 +29,14 @@ export const registerUser = async (req, res) => {
         const user = new User({ username, email, password, profilePic });
         await user.save();
 
-        const createUserStatsAccount = await UserStats.create({ userId: user._id });
-
-        if (!createUserStatsAccount) return res.status(400).json({ success: false, message: "Error creating user stats account" });
+        const userStats = await UserStats.create({ userId: user._id });
+        if (!userStats) {
+            return res.status(400).json({ success: false, message: "Error creating user stats account" });
+        }
 
         const accessToken = user.generateToken();
 
-        res.cookie("access_token", accessToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 24 * 60 * 60 * 1000,
-            path: "/"
-        });
+        res.cookie("access_token", accessToken, cookieOptions);
 
         return res.status(201).json({
             success: true,
@@ -42,12 +49,12 @@ export const registerUser = async (req, res) => {
             },
             token: accessToken,
         });
+
     } catch (error) {
-        console.error("Error registering user:", error.message);
+        console.error("Error registering user:", error);
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
-
 
 export const loginUser = async (req, res) => {
     try {
@@ -67,21 +74,13 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ success: false, message: "Invalid credentials" });
         }
 
-
-
         const accessToken = user.generateToken();
 
-        res.cookie("access_token", accessToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 24 * 60 * 60 * 1000,
-            path: "/"
-        });
+        res.cookie("access_token", accessToken, cookieOptions);
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
-            message: "✅ User logged in successfully",
+            message: "User logged in successfully",
             user: {
                 id: user._id,
                 username: user.username,
@@ -90,21 +89,22 @@ export const loginUser = async (req, res) => {
             },
             token: accessToken,
         });
+
     } catch (error) {
-        console.error("❌ Error logging in user:", error.message);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        console.error("Error logging in user:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
 
 export const logoutUser = async (req, res) => {
     try {
-        res.clearCookie("access_token");
-        res.status(200).json({ success: true, message: "✅ User logged out successfully" });
+        res.clearCookie("access_token", { path: "/" });
+        res.status(200).json({ success: true, message: "User logged out successfully" });
     } catch (error) {
-        console.error("❌ Error logging out user:", error.message);
+        console.error("Error logging out user:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
     }
-}
+};
 
 export const me = async (req, res) => {
     try {
@@ -112,9 +112,10 @@ export const me = async (req, res) => {
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
-        res.status(200).json({
+
+        return res.status(200).json({
             success: true,
-            message: "✅ User details fetched successfully",
+            message: "User details fetched successfully",
             user: {
                 id: user.id,
                 username: user.username,
@@ -125,28 +126,34 @@ export const me = async (req, res) => {
                 xpToNextLevel: user.xpToNextLevel
             },
         });
+
     } catch (error) {
-        console.error("❌ Error fetching user details:", error.message);
+        console.error("Error fetching user details:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
     }
-}
+};
 
 export const getUserStats = async (req, res) => {
     try {
-        const userId = req.user._id;
-        if (!userId) return res.status(400).json({ success: false, message: "User id not provided" });
-        const userStats = await UserStats.findOne({ userId }).lean();
-        if (!userStats) return res.status(400).json({ success: false, message: "User stats not found" });
+        const userStats = await UserStats.findOne({ userId: req.user._id }).lean();
+
+        if (!userStats) {
+            return res.status(400).json({ success: false, message: "User stats not found" });
+        }
+
         return res.status(200).json({
-            success: true, message: "User stats fetched successfully", data: {
+            success: true,
+            message: "User stats fetched successfully",
+            data: {
                 totalProjects: userStats.totalProjects,
                 totalQuickNotes: userStats.totalQuickNotes,
                 totalLearnings: userStats.totalLearnings,
                 totalHabits: userStats.totalHabits
             }
         });
+
     } catch (error) {
-        console.error("❌ Error fetching user stats:", error.message);
+        console.error("Error fetching user stats:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
     }
-}
+};

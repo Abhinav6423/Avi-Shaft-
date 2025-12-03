@@ -4,7 +4,7 @@ import "react-quill-new/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import { createQuickNote } from "../../Api-Calls/createQuickNote.js";
 import toast from "react-hot-toast";
-
+import Loader from "../Loader.jsx"
 export default function CreateQuickNoteForm() {
     const navigate = useNavigate();
 
@@ -51,6 +51,8 @@ export default function CreateQuickNoteForm() {
             setLoading(false);
         }
     };
+
+    if (loading) return <Loader />
 
     return (
         <div
