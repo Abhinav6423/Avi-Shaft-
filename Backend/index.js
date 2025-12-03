@@ -9,10 +9,15 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: ["http://localhost:5173", "https://avi-shaft.vercel.app"],
-
+    origin: [
+        "http://localhost:5173",
+        "https://avi-shaft.vercel.app",
+        "https://avi-shaft.vercel.app/",
+        "https://avi-shaft.git-main-abhinav-pandeys-projects-3d126576.vercel.app"
+    ],
     credentials: true
 }));
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Credentials", "true");
     next();
