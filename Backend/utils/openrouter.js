@@ -9,11 +9,30 @@ export async function evaluateLearningCompleteness({ title, note }) {
                 messages: [
                     {
                         role: "system",
-                        content: `... your system prompt ...`
+                        content: `
+You are a strict JSON-only assistant. 
+Always respond ONLY with pure JSON inside \`\`\`json ... \`\`\`.
+Never include text before or after JSON.
+
+Return ONLY this JSON structure:
+{
+  "rating": number,
+  "reason": "short explanation",
+  "honest_review": "big brother style review",
+  "improvements": ["...", "...", "..."]
+}
+                        `
                     },
                     {
                         role: "user",
-                        content: `Title: ${title}\nNote: ${note}\nEvaluate this.`
+                        content: `
+Evaluate this learning note:
+
+Title: ${title}
+Note: ${note}
+
+Return ONLY valid JSON.
+                        `
                     }
                 ]
             },
@@ -27,43 +46,45 @@ export async function evaluateLearningCompleteness({ title, note }) {
             }
         );
 
-        let content = response.data?.choices?.[0]?.message?.content;
+        let content = response.data.choices[0].message.content;
 
-        if (!content) {
-            console.error("❌ AI returned empty or invalid response:", response.data);
-            return {
-                rating: 1,
-                reason: "AI returned empty response",
-                honest_review: "Could not analyze your entry.",
-                improvements: ["Try again later."]
-            };
+        // Try to extract JSON inside ```json ... ```
+        const jsonMatch = content.match(/```json([\s\S]*?)```/);
+
+        if (jsonMatch) {
+            content = jsonMatch[1];
         }
 
-        // Extract JSON safely from ANY output format
-        const first = content.indexOf("{");
-        const last = content.lastIndexOf("}");
+        // Final safe JSON parse
+        try {
+            return JSON.parse(content.trim());
+        } catch (err) {
+            console.log("❌ AI returned INVALID JSON. Falling back.");
 
-        if (first === -1 || last === -1) {
-            console.error("❌ AI returned invalid JSON format:", content);
             return {
                 rating: 1,
-                reason: "Invalid AI response format",
-                honest_review: "AI could not provide proper feedback.",
-                improvements: ["Rewrite your note and try again."]
+                reason: "Invalid AI JSON format",
+                honest_review: "AI could not analyze your note properly.",
+                improvements: [
+                    "Rewrite your note and try again.",
+                    "Add more structure.",
+                    "Be more clear and detailed."
+                ]
             };
         }
-
-        const jsonString = content.slice(first, last + 1);
-
-        return JSON.parse(jsonString);
 
     } catch (error) {
-        console.error("🔥 AI Evaluation Error:", error?.response?.data || error);
+        console.error("🔥 Error evaluating learning completeness:", error?.response?.data || error);
+
         return {
             rating: 1,
-            reason: "AI evaluation failed",
-            honest_review: "AI could not analyze your note.",
-            improvements: ["Try again later."]
+            reason: "AI request failed completely",
+            honest_review: "The AI system failed to respond. No analysis available.",
+            improvements: [
+                "Try again later.",
+                "Ensure your note is clear.",
+                "Write with more detail."
+            ]
         };
     }
 }
