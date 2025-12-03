@@ -6,6 +6,7 @@ import "react-quill-new/dist/quill.bubble.css";
 import "../note-viewer.css"; // ⬅ IMPORTANT (custom spacing styles)
 import { openNote } from "../Api-Calls/openQuickNote.js";
 import Navbar from "../Components/Dashboard/Navbar.jsx";
+import Loader from "../Components/Loader.jsx";
 
 export default function DisplayNote() {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ export default function DisplayNote() {
         content: "",
         tag: ""
     })
+
+    const [loading, setLoading] = useState(true)
 
 
 
@@ -32,6 +35,8 @@ export default function DisplayNote() {
             }
         } catch (error) {
             console.log(error)
+        }finally{
+            setLoading(false)
         }
     };
 
@@ -39,6 +44,10 @@ export default function DisplayNote() {
         fetchNote();
     }, []);
 
+
+    if (loading) {
+        return <Loader />
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">

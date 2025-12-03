@@ -7,6 +7,7 @@ export const LoginUser = async ({ email, password }) => {
         const res = await axios.post(`${API}/api/auth/login`, { email, password }, { withCredentials: true });
 
         if (res.status === 200) {
+            console.log(res.data)
             return {
                 status: true,
                 data: res?.data

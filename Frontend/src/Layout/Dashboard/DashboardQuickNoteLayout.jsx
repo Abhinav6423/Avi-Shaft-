@@ -26,6 +26,8 @@ export default function DashboardQuickNoteLayout() {
 
     // Fetch API
     const fetchQuickNotes = async () => {
+        setLoading(true);
+        setQuickNotes([]);
         try {
             const res = await getAllQuickNote(tag, page, limit);
 

@@ -80,8 +80,15 @@ export const createLearningJournal = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: "Internal server error 500." });
+        console.log("🔥🔥🔥 BACKEND ERROR TRIGGERED 🔥🔥🔥");
+        console.log("Full error:", error);
+        console.log("Message:", error.message);
+        console.log("Stack:", error.stack);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Internal server error"
+        });
     }
 }
 
