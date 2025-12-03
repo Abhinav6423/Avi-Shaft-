@@ -1,9 +1,11 @@
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL;
+
 export const openLearningJournal = async (journalId) => {
     try {
         const res = await axios.get(
-            `http://localhost:4000/api/learningjournal/openjournal/${journalId}`,
+            `${API}/api/learningjournal/openjournal/${journalId}`,
             { withCredentials: true }
         );
 

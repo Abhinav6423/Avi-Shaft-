@@ -1,8 +1,10 @@
 import axios from "axios"
 
+const API = import.meta.env.VITE_API_URL;
+
 export const deleteQuickNote = async ({ noteId }) => {
-    try {
-        const res = await axios.post("http://localhost:4000/api/quicknote/delete/:noteId", { withCredentials: true });
+    try {h
+        const res = await axios.post(`${API}/api/quicknote/delete/:noteId`, { withCredentials: true });
         if (res.status === 200) return {
             status: true,
             data: res?.data

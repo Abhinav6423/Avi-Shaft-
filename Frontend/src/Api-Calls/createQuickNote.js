@@ -1,8 +1,10 @@
 import axios from "axios"
+const API = import.meta.env.VITE_API_URL;
+
 
 export const createQuickNote = async ( title, note, tag ) => {
     try {
-        const res = await axios.post("http://localhost:4000/api/quicknote/create",
+        const res = await axios.post(`${API}/api/quicknote/create`,
             { title, note, tag },
             { withCredentials: true });
 

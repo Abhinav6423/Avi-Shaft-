@@ -1,8 +1,11 @@
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL;
+
+
 export const createLearningJournal = async (title, content, selectedTag, difficulty, effort) => {
     try {
-        const res = await axios.post("http://localhost:4000/api/learningjournal/create",
+        const res = await axios.post(`${API}/api/learningjournal/create`,
             { title, note: content, tag: selectedTag, difficulty, timeRate: effort },
             { withCredentials: true });
 

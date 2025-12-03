@@ -1,9 +1,9 @@
 import axios from "axios";
-
+const API = import.meta.env.VITE_API_URL;
 export const openNote = async (noteId) => {
     try {
         const res = await axios.get(
-            `http://localhost:4000/api/quicknote/singleNote/${noteId}`,
+            `${API}/api/quicknote/singleNote/${noteId}`,
             { withCredentials: true }
         );
 

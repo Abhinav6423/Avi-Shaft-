@@ -1,9 +1,10 @@
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL;
 export const getMeData = async () => {
     try {
         const res = await axios.get(
-            "http://localhost:4000/api/auth/me",
+            `${API}/api/auth/me`,
             { withCredentials: true }
         );
 
