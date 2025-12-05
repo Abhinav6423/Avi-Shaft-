@@ -1,7 +1,7 @@
 import React from "react";
 import { FileText, Flame, Gauge } from "lucide-react";
 
-export default function LearningJournalCard({ 
+export default function LearningJournalCard({
     title,
     note,
     date,
@@ -37,9 +37,11 @@ export default function LearningJournalCard({
             </h3>
 
             {/* Description */}
-            <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
-                {note}
-            </p>
+            <div
+                className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2"
+                dangerouslySetInnerHTML={{ __html: note }}
+            ></div>
+
 
             {/* Depth Indicators */}
             <div className="flex items-center gap-5 mb-4">

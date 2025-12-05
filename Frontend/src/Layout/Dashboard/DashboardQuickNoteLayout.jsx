@@ -88,22 +88,39 @@ export default function DashboardQuickNoteLayout() {
 
 
             {/* MOBILE VIEW — Horizontal Scroll */}
+            {/* MOBILE VIEW — Horizontal Scroll */}
             <div
                 ref={scrollRef}
                 onScroll={handleScroll}
-                className="sm:hidden overflow-x-auto snap-x snap-mandatory flex gap-4 pb-4"
+                className="
+        sm:hidden 
+        overflow-x-auto 
+        snap-x snap-mandatory 
+        flex gap-6 
+        pb-4 pt-2 
+        px-4 
+        scroll-smooth
+    "
             >
                 {quickNotes.map((item, idx) => (
-                    <Link to={`/single-note/${item._id}`}>
+                    <Link key={item._id} to={`/single-note/${item._id}`}>
                         <div
-
-                            key={idx} className="min-w-full snap-center">
-                            <DashboardQuickNoteCard {...item}
-                            />
+                            className="
+                    min-w-[85%] 
+                    snap-center 
+                    bg-white 
+                    rounded-2xl 
+                    shadow-md 
+                    overflow-hidden 
+                    border border-gray-100
+                "
+                        >
+                            <DashboardQuickNoteCard {...item} />
                         </div>
                     </Link>
                 ))}
             </div>
+
 
             {/* DESKTOP VIEW — Grid */}
             <div
@@ -137,39 +154,50 @@ export default function DashboardQuickNoteLayout() {
             </div>
 
 
-            {/* Desktop Pagination Arrows */}
-            <div className="hidden sm:flex justify-center items-center gap-4 mt-4">
+            {/* Desktop Pagination – Modern Buttons */}
+            {/* Desktop Pagination – Green Minimal Theme */}
+            <div className="hidden sm:flex justify-center items-center gap-6 mt-10">
 
-                {/* Previous Button */}
+                {/* Prev Button */}
                 <button
                     disabled={page === 1}
-                    onClick={() => {
-                        const newPage = Math.max(page - 1, 1);
-                        setPage(newPage);
-
-
-                    }}
-                    className={`px-4 py-1 rounded border 
-            ${page === 1 ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-100"}`}
+                    onClick={() => setPage(Math.max(page - 1, 1))}
+                    className={`
+            px-6 py-2 rounded-xl text-sm font-medium
+            transition-all duration-200 shadow-sm border
+            ${page === 1
+                            ? "opacity-40 cursor-not-allowed bg-white border-gray-200 text-gray-400"
+                            : "bg-white text-[#0A5244] border-[#0A5244]/30 hover:bg-[#0A5244] hover:text-white hover:shadow-lg"
+                        }
+        `}
                 >
-                    ◀ Prev
+                    Previous
                 </button>
+
+                {/* Page Indicator */}
+                <div className="px-5 py-2 bg-white/70 border border-[#0A5244]/20 rounded-xl shadow-sm text-[#0A5244] text-sm font-semibold">
+                    Page {page} of {totalPages}
+                </div>
 
                 {/* Next Button */}
                 <button
                     disabled={page === totalPages}
-                    onClick={() => {
-                        const newPage = Math.min(page + 1, totalPages);
-                        setPage(newPage);
-
-                    }}
-                    className={`px-4 py-1 rounded border 
-            ${page === totalPages ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-100"}`}
+                    onClick={() => setPage(Math.min(page + 1, totalPages))}
+                    className={`
+            px-6 py-2 rounded-xl text-sm font-medium
+            transition-all duration-200 shadow-sm border
+            ${page === totalPages
+                            ? "opacity-40 cursor-not-allowed bg-white border-gray-200 text-gray-400"
+                            : "bg-white text-[#0A5244] border-[#0A5244]/30 hover:bg-[#0A5244] hover:text-white hover:shadow-lg"
+                        }
+        `}
                 >
-                    Next ▶
+                    Next
                 </button>
 
             </div>
+
+
 
 
 

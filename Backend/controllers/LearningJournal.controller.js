@@ -22,6 +22,7 @@ export const createLearningJournal = async (req, res) => {
 
         // XP calculation
         const XPBreakdown = calculateXP({ rating: aiRating, difficulty, timeScale: timeRate });
+        console.log(XPBreakdown);
         const xpEarned = XPBreakdown.xp;
 
         // Update Stats

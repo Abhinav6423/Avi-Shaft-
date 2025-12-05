@@ -6,7 +6,7 @@ const LearningJournal = () => {
     return (
         <>
             <Navbar />
-            <div className="mt-15">
+            <div className="mt-15 bg-gradient-to-br from-[#C8F5E6] via-white to-[#A0EDD9]">
                 <LearningJournalGrid />
             </div>
         </>

@@ -1,44 +1,58 @@
 import React from "react";
 import { StickyNote } from "lucide-react";
 
-
-export default function DashboardQuickNoteCard({ title, note, date = Date.now(), _id, tag }) {
-
+export default function DashboardQuickNoteCard({ title, note, date = Date.now(), tag }) {
   const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
 
-
   return (
     <div
       className="
-        w-full 
-        bg-white 
-        border border-[#E5E7EB] 
-        rounded-xl 
-        p-5 
-        shadow-sm 
-        hover:shadow-md 
-        transition
-      "
+                w-full 
+                bg-white 
+                border border-gray-200 
+                rounded-2xl 
+                p-5 
+                shadow-sm 
+                hover:shadow-md 
+                active:scale-[0.98]
+                transition-all duration-200 
+                touch-pan-y
+            "
     >
-      {/* Header Icon */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="h-9 w-9 rounded-lg bg-[#E6F4EF] flex items-center justify-center">
-          <StickyNote size={18} className="text-[#0A5244]" />
+      {/* Top Section */}
+      <div className="flex items-center justify-between mb-4">
+        {/* Icon */}
+        <div className="h-10 w-10 rounded-xl bg-[#E6F4EF] flex items-center justify-center shadow-inner">
+          <StickyNote size={20} className="text-[#0A5244]" />
         </div>
 
-        <span className="text-sm font-medium bg-gray-400 p-1 rounded-2xl  text-white">{tag}</span>
+        {/* Tag Badge */}
+        <span
+          className="
+                        text-xs 
+                        font-semibold 
+                        px-3 py-1 
+                        rounded-full 
+                        bg-[#0A5244]/10 
+                        text-[#0A5244]
+                        capitalize
+                    "
+        >
+          {tag || "note"}
+        </span>
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-[#111827]">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-900 leading-snug line-clamp-2">
+        {title}
+      </h3>
 
-      {/* Note Content */}
-      <p className="text-sm text-[#6B7280] mt-2 leading-relaxed">
-        <p>{stripHtml(note).slice(0, 50)}...</p>
-
+      {/* Note Preview */}
+      <p className="text-sm text-gray-600 mt-2 line-clamp-2 leading-relaxed">
+        {stripHtml(note)}
       </p>
     </div>
   );

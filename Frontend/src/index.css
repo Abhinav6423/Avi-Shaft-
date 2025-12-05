@@ -7,3 +7,50 @@
 .ql-toolbar {
   border: none !important;
 }
+
+/* Remove scroll from the editor */
+.auto-expand-editor .ql-editor {
+    overflow-y: hidden !important;
+    padding-bottom: 40px;
+}
+
+/* Make editor automatically grow */
+.auto-expand-editor .ql-editor {
+    min-height: 200px; /* starting height */
+}
+
+/* Ensure container grows with content */
+.auto-expand-editor {
+    height: auto !important;
+}
+
+/* Let the outside container grow as editor grows */
+.auto-expand-editor .ql-container {
+    height: auto !important;
+}
+
+/* AUTO EXPANDING REACT QUILL */
+.auto-expand-editor .ql-container {
+    height: auto !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+.auto-expand-editor .ql-editor {
+    overflow-y: hidden !important;
+    min-height: 200px;
+    padding-bottom: 40px;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.auto-expand-editor {
+    height: auto !important;
+}
+
+/* Cleaner Quill Toolbar */
+.ql-toolbar.ql-snow {
+    border: none !important;
+    background: transparent !important;
+    padding-left: 0 !important;
+}
