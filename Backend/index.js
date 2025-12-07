@@ -43,10 +43,12 @@ app.use(cookieParser());
 import quickNoteRoutes from "./routes/QuickNote.route.js";
 import learningJournalRoutes from "./routes/LearningJournalRoute.route.js";
 import userRoutes from "./routes/user.routes.js";
+import productRoutes from "./routes/Product.routes.js";
 
 app.use("/api/quicknote", quickNoteRoutes);
 app.use("/api/learningjournal", learningJournalRoutes);
 app.use("/api/auth", userRoutes);
+app.use("/api/products", productRoutes);
 
 app.get("/", (req, res) => res.send("Server running..."));
 
